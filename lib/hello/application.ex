@@ -1,3 +1,5 @@
+require HTTPoison
+
 defmodule Hello.Application do
   use Application
 
@@ -11,8 +13,8 @@ defmodule Hello.Application do
       # Start the Ecto repository
       supervisor(Hello.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(HelloWeb.Endpoint, [])
-      # supervisor(Hello.GithubSync, [])
+      supervisor(HelloWeb.Endpoint, []),
+      supervisor(Hello.GithubSync, [])
       # Start your own worker by calling: Hello.Worker.start_link(arg1, arg2, arg3)
       # worker(Hello.Worker, [arg1, arg2, arg3]),
     ]

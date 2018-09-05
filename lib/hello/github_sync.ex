@@ -1,4 +1,6 @@
 defmodule Hello.GithubSync do
+  alias Hello.{Repo, GithubRepo}
+  @get_all_repos_url "https://api.github.com/search/repositories?q=stars%3A%3E0&sort=stars&per_page=100"
   use Task
 
   def start_link do
@@ -8,7 +10,7 @@ defmodule Hello.GithubSync do
   def sync() do
     receive do
     after
-      10_000 ->
+      60_000 ->
         get_price()
         sync()
     end
@@ -20,6 +22,11 @@ defmodule Hello.GithubSync do
   end
 
   defp get_price() do
-    IO.puts "To the moon!"
+    responce = Poison.decode!(HTTPoison.get!(@get_all_repos_url).body)
+    Repo.query("TRUNCATE github_repos")
+
+    Enum.each(responce["items"], fn(repo) ->
+      Repo.insert(%GithubRepo{name: repo["name"], github_id: repo["id"], data: repo})
+    end)
   end
 end
