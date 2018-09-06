@@ -26,5 +26,6 @@ defmodule HelloWeb.Router do
     pipe_through :api
 
     get "/github_repos", GithubRepoController, :index
+    get "/github_repos/:id_or_name", GithubRepoController, :show
   end
 end

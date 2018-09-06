@@ -6,6 +6,10 @@ defmodule HelloWeb.GithubRepoView do
     render_many(github_repos, GithubRepoView, "github_repo.json")
   end
 
+  def render("show.json", %{github_repo: github_repo}) do
+    render_one(github_repo, GithubRepoView, "github_repo.json")
+  end
+
   def render("github_repo.json", %{github_repo: github_repo}) do
     %{
       id: github_repo.id,
