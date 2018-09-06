@@ -22,7 +22,9 @@ defmodule HelloWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", HelloWeb do
-  #   pipe_through :api
-  # end
+  scope "/api/v1", HelloWeb do
+    pipe_through :api
+
+    get "/github_repos", GithubRepoController, :index
+  end
 end
