@@ -7,10 +7,15 @@ defmodule HelloWeb.GithubRepoController do
   end
 
   def show(conn, %{"id_or_name" => id_or_name}) do
-    if Regex.match?(~r/^\d+$/, id_or_name) do
-      render conn, "show.json", github_repo: Repo.get(GithubRepo, id_or_name)
+    parsed_search_param = if Regex.match?(~r/^\d+$/, id_or_name), do: :github_id, else: :name
+    github_repo = Repo.get_by(GithubRepo, "#{parsed_search_param}": id_or_name)
+
+    if github_repo do
+      render conn, "show.json", github_repo: github_repo
     else
-      render conn, "show.json", github_repo: Repo.get_by(GithubRepo, name: id_or_name)
+      conn
+      |> put_status(:not_found)
+      |> render("show.json", github_repo: github_repo)
     end
   end
 end
