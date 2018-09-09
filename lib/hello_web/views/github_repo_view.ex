@@ -18,4 +18,10 @@ defmodule HelloWeb.GithubRepoView do
       data: github_repo.data
     }
   end
+
+  def render("sync.json", %{status: status}) do
+    %{
+      status: status
+    }
+  end
 end

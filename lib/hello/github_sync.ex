@@ -7,21 +7,21 @@ defmodule Hello.GithubSync do
     Task.start_link(&initial_sync/0)
   end
 
-  def sync() do
+  def cron_sync do
     receive do
     after
-      60_000 ->
-        get_price()
-        sync()
+      30_000 ->
+        update_data()
+        cron_sync()
     end
   end
 
   def initial_sync do
-    get_price()
-    sync()
+    update_data()
+    cron_sync()
   end
 
-  defp get_price() do
+  def update_data do
     responce = Poison.decode!(HTTPoison.get!(@get_all_repos_url).body)
     Repo.query("TRUNCATE github_repos")
 

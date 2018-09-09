@@ -10,7 +10,8 @@ defmodule Hello.Mixfile do
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      escript: escript()
     ]
   end
 
@@ -58,5 +59,9 @@ defmodule Hello.Mixfile do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
+  end
+
+  def escript do
+    [main_module: Hello.CLI]
   end
 end

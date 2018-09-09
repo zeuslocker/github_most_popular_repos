@@ -18,4 +18,10 @@ defmodule HelloWeb.GithubRepoController do
       |> render("show.json", github_repo: github_repo)
     end
   end
+
+  def sync(conn, _params) do
+    Supervisor.terminate_child(Hello.Supervisor, Hello.GithubSync)
+    Supervisor.restart_child(Hello.Supervisor, Hello.GithubSync)
+    render(conn, "sync.json", status: "complete")
+  end
 end
